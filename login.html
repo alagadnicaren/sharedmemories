@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #754c21;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            color: #754c21;
+            margin-bottom: 20px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .login-input {
+            padding: 12px;
+            border: 2px solid #754c21;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            color: #754c21;
+            background: #fdf8f4;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #a87340;
+            box-shadow: 0 0 6px rgba(117, 76, 33, 0.6);
+        }
+
+        .login-btn {
+            background: #754c21;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #a87340;
+        }
+
+        .login-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #d9534f;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Welcome!</h1>
+        <form class="login-form" id="login-form">
+            <input type="text" class="login-input" id="username" placeholder="Enter your username" required>
+            <button type="submit" class="login-btn" id="login-btn">Login</button>
+        </form>
+        <div class="error-message" id="error-message"></div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            if (username.length < 3) {
+                errorMessage.textContent = 'Username must be at least 3 characters long.';
+                return;
+            }
+
+            if (username.length > 20) {
+                errorMessage.textContent = 'Username must be no more than 20 characters long.';
+                return;
+            }
+
+            // Check for invalid characters (simple check)
+            if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                errorMessage.textContent = 'Username can only contain letters, numbers, and underscores.';
+                return;
+            }
+
+            // Store username
+            localStorage.setItem('currentUser', username);
+            localStorage.setItem('userData', JSON.stringify({
+                username: username,
+                loginTime: new Date().toISOString(),
+                albums: [],
+                music: []
+            }));
+
+            // Redirect to home
+            window.location.href = 'home.html';
+        });
+    </script>
+</body>
+</html>
